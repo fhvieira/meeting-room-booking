@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -20,6 +21,10 @@ public class RoomService {
     public Page<Room> findAll(Pageable page) {
         return roomRepository.findAll(page);
     }
+
+//    public List<Room> findAll() {
+//        return roomRepository.findAll();
+//    }
 
     public Room saveRoom(Room room) {
         return roomRepository.save(room);
