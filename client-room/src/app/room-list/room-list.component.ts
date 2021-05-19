@@ -13,25 +13,34 @@ import { SortableHeaderDirective, SortEvent} from './sortable.directive';
   styleUrls: ["./room-list.component.css"]
 })
 export class RoomListComponent implements OnInit {
-  total$: Observable<number>;
-
   @ViewChildren(SortableHeaderDirective) headers: QueryList<SortableHeaderDirective>;
 
   filter = new RoomFilter();
   selectedRoom: Room;
   feedback: any = {};
-
+  total$: Observable<number>;
   rooms: Observable<Room[]>;
 
-  constructor(private roomService: RoomService,
-    private router: Router) {}
+  constructor (private roomService: RoomService, private router: Router) {
+  }
 
   ngOnInit() {
     this.reloadData();
   }
 
+  search(): void {
+    this.roomService.load(this.filter);
+    this.total$ = this.roomService.size$;
+  }
+
+  get roomList(): Room[] {
+    return this.roomService.roomList;
+  }
+
   reloadData() {
+    this.roomService.load(this.filter);
     this.rooms = this.roomService.getRoomsList(this.filter);
+    this.total$ = this.roomService.size$;
   }
 
   onChange(pageSize: number) {

@@ -8,6 +8,7 @@ import { RoomDetailsComponent } from './room-details/room-details.component';
 import { RoomListComponent } from './room-list/room-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UpdateRoomComponent } from './update-room/update-room.component';
+import { SortableHeaderDirective } from './room-list/sortable.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -16,7 +17,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CreateRoomComponent,
     UpdateRoomComponent,
     RoomDetailsComponent,
-    RoomListComponent    
+    RoomListComponent,
+    SortableHeaderDirective
   ],
   imports: [
     BrowserModule,

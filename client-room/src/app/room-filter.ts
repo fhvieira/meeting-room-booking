@@ -1,5 +1,5 @@
 export class RoomFilter {
-    title = '';
+    name = '';
     column: string;
     direction: string;
     page = 0;

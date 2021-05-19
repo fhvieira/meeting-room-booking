@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,14 +24,12 @@ public class RoomController {
     private final RoomService roomService;
 
     @GetMapping
-    public Page<Room> findAll(Pageable page) {
-        return roomService.findAll(page);
+    public Page<Room> findAll(@RequestParam(value = "name", required = false) String name, Pageable page) {
+        if (name == null) {
+            return roomService.findAll(page);
+        }
+        return roomService.findAllByName(name, page);
     }
-
-//    @GetMapping
-//    public List<Room> findAll() {
-//        return roomService.findAll();
-//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Room> findById(@PathVariable Long id) throws ResourceNotFoundException {

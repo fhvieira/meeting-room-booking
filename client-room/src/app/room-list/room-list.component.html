@@ -3,43 +3,54 @@
     <h2>Room List</h2>
   </div>
   <div class="panel-body">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>name</th>
-          <th>date</th>
-          <th>startHour</th>
-          <th>endHour</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let room of rooms | async">
-          <td>{{room.name}}</td>
-          <td>{{room.date}}</td>
-          <td>{{room.startTime}}</td>
-          <td>{{room.endTime}}</td>
-          <td><button (click)="deleteRoom(room.id)" class="btn btn-danger">Delete</button>
-            <button (click)="updateRoom(room.id)" class="btn btn-info" style="margin-left: 10px">Update</button>
-              <button (click)="roomDetails(room.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <form #f="ngForm" class="form-inline">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input [(ngModel)]="filter.name" id="name" name="name" class="form-control ml-2 mr-2">
+      </div>
+      <button (click)="reloadData()" [disabled]="!f?.valid" class="btn btn-primary">Search</button>
+    </form> 
+    <div *ngIf="roomList.length > 0">
+      <div *ngIf="feedback" class="alert alert-{{feedback.type}} m-2">{{ feedback.message }}</div>
+      <div class="table-responsive">
+        <table class="table table-centered table-hover mb-0" id="datatable">
+          <thead>
+          <tr>
+            <th class="border-top-0" scope="col" sortable="name" (sort)="onSort($event)">Name</th>
+            <th class="border-top-0" scope="col" sortable="date" (sort)="onSort($event)">Date</th>
+            <th class="border-top-0" scope="col" sortable="startTime" (sort)="onSort($event)">Start Time</th>
+            <th class="border-top-0" scope="col" sortable="endTime" (sort)="onSort($event)">End Time</th>
+            <th class="border-top-0" scope="col" style="width:300px"></th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let room of roomList" [class.active]="item === selectedRoom">
+              <td>{{room.name}}</td>
+              <td>{{room.date}}</td>
+              <td>{{room.startTime}}</td>
+              <td>{{room.endTime}}</td>
+              <td><button (click)="deleteRoom(room.id)" class="btn btn-danger">Delete</button>
+                  <button (click)="updateRoom(room.id)" class="btn btn-info" style="margin-left: 10px">Update</button>
+                  <button (click)="roomDetails(room.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-    <div class="d-flex justify-content-between p-2">
-      <ngb-pagination [maxSize]="10"
-                      [collectionSize]="total$ | async" [(page)]="filter.page" [pageSize]="filter.size"
-                      (pageChange)="onPageChange(filter.page)">
-      </ngb-pagination>
+        <div class="d-flex justify-content-between p-2">
+          <ngb-pagination [maxSize]="10"
+                          [collectionSize]="total$ | async" [(page)]="filter.page" [pageSize]="filter.size"
+                          (pageChange)="onPageChange(filter.page)">
+          </ngb-pagination>
 
-      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="filter.size"
-              (ngModelChange)="onChange(filter.size)">
-        <option [ngValue]="10">10 items per page</option>
-        <option [ngValue]="20">20 items per page</option>
-        <option [ngValue]="100">100 items per page</option>
-      </select>
+          <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="filter.size"
+                  (ngModelChange)="onChange(filter.size)">
+            <option [ngValue]="10">10 items per page</option>
+            <option [ngValue]="20">20 items per page</option>
+            <option [ngValue]="100">100 items per page</option>
+          </select>
+        </div>
+      </div>
     </div>
-    
   </div>
 </div>
